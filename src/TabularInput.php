@@ -8,14 +8,14 @@
 
 namespace unclead\multipleinput;
 
+use unclead\multipleinput\renderers\RendererInterface;
+use unclead\multipleinput\renderers\TableRenderer;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\base\Model;
+use yii\base\Widget;
 use yii\db\ActiveRecordInterface;
-use yii\bootstrap\Widget;
 use yii\widgets\ActiveForm;
-use unclead\multipleinput\renderers\TableRenderer;
-use unclead\multipleinput\renderers\RendererInterface;
 
 /**
  * Class TabularInput
@@ -204,6 +204,28 @@ class TabularInput extends Widget
      */
     public $prepend = false;
 
+    // bootstrap-related fields
+    /**
+     * @var array the options for the underlying Bootstrap JS plugin.
+     * Please refer to the corresponding Bootstrap plugin Web page for possible options.
+     * For example, [this page](http://getbootstrap.com/javascript/#modals) shows
+     * how to use the "Modal" plugin and the supported options (e.g. "remote").
+     */
+    public $clientOptions = [];
+    /**
+     * @var array the event handlers for the underlying Bootstrap JS plugin.
+     * Please refer to the corresponding Bootstrap plugin Web page for possible events.
+     * For example, [this page](http://getbootstrap.com/javascript/#modals) shows
+     * how to use the "Modal" plugin and the supported events (e.g. "shown").
+     */
+    public $clientEvents = [];
+
+        /**
+     * @var array the HTML attributes for the widget container tag.
+     * @see \yii\helpers\Html::renderTagAttributes() for details on how attributes are being rendered.
+     */
+    public $options = [];
+
     /**
      * Initialization.
      *
@@ -240,6 +262,9 @@ class TabularInput extends Widget
             $this->modelClass = key($modelClasses);
         }
 
+        if (!isset($this->options['id'])) {
+            $this->options['id'] = $this->getId();
+        }
         parent::init();
     }
 
